@@ -35,28 +35,26 @@ public class MainController {
         return "greeting";
     }
 
-
-    @GetMapping("/add")
-    public String addItem(ItemEntity itemEntity){
-        return "add";
+    @GetMapping("/main")
+    public String showIndex(Model model,@AuthenticationPrincipal User user){
+        Iterable<ItemEntity> messages = itemEntityRepository.findByOwner(user);
+        Iterable<ItemEntity> messagesAll = itemEntityRepository.findByIsBought(false);
+        model.addAttribute("messagesAll", messagesAll);
+        model.addAttribute("messages", messages);
+        return "index";
     }
-    @PostMapping("/add")
-    public String postItem(@Valid ItemEntity itemEntity, BindingResult bindingResult, @AuthenticationPrincipal User user, Model model) throws IOException {
-        itemEntity.setOwner(user);
 
-        if(bindingResult.hasErrors()){
-            Map<String, String> errorsMap = ControllerUtils.getErrorsMap(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("message", itemEntity);
-            return "add";
-        }else{
-            model.addAttribute("message",null);
-            itemEntity.setPrice(itemEntity.getStartPrice());
-            itemEntityRepository.save(itemEntity);
-        }
+    @PostMapping("/delete")
+    public String deleteItem(@RequestParam(name ="id")  String id){
+        itemEntityRepository.deleteById(Long.parseLong(id));
         return "redirect:/main";
     }
 
-
-
+    @PostMapping("/buy")
+    public String buy( @RequestParam(name ="id")  String id){
+        ItemEntity itemEntity = itemEntityRepository.findById(Long.parseLong(id)).get();
+        itemEntity.setIsBought(true);
+        itemEntity.setFinishPrice(itemEntity.getPrice());
+        return "redirect:/main";
+    }
 }
