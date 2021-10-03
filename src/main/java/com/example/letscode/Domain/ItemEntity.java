@@ -29,7 +29,7 @@ public class ItemEntity {
     private Integer startPrice;
     private Integer price;
     private Integer finishPrice;
-
+    private Boolean isBought;
 
 
     private String filename;
