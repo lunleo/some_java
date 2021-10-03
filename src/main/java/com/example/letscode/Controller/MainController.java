@@ -35,6 +35,28 @@ public class MainController {
         return "greeting";
     }
 
+    @GetMapping("/main")
+    public String showIndex(Model model,@AuthenticationPrincipal User user){
+        Iterable<ItemEntity> messages = itemEntityRepository.findByOwner(user);
+        Iterable<ItemEntity> messagesAll = itemEntityRepository.findByIsBought(false);
+        model.addAttribute("messagesAll", messagesAll);
+        model.addAttribute("messages", messages);
+        return "index";
+    }
+
+    @PostMapping("/delete")
+    public String deleteItem(@RequestParam(name ="id")  String id){
+        itemEntityRepository.deleteById(Long.parseLong(id));
+        return "redirect:/main";
+    }
+
+    @PostMapping("/buy")
+    public String buy( @RequestParam(name ="id")  String id){
+        ItemEntity itemEntity = itemEntityRepository.findById(Long.parseLong(id)).get();
+        itemEntity.setIsBought(true);
+        itemEntity.setFinishPrice(itemEntity.getPrice());
+        return "redirect:/main";
+    }
 
     @GetMapping("/add")
     public String addItem(ItemEntity itemEntity){
