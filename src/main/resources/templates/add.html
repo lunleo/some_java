@@ -18,7 +18,10 @@
 </style>
 <body>
 <div>
+
 <form th:if = "!${itemEntity}" th:action="@{/add/new}" th:object="${itemEntity}" method="post" enctype="multipart/form-data">
+
+
     <label style="font-size: 26px; margin-left: 200px;">Text:</label><br>
     <input type="text" th:field="*{text}" id="text" style="margin-bottom: 20px; margin-left: 200px; border: none; background-color: DarkKhaki; margin-top: 15px;"><br>
     <label style="font-size: 26px; margin-top: 15px; margin-left: 200px;">Tag:</label><br>
@@ -30,7 +33,10 @@
 </div>
 
 <div>
+
 <form th:unless = "!${itemEntity}" th:action="@{/add/new}" th:object="${itemEntity}" method="post" enctype="multipart/form-data">
+
+
     <div th:if="${textError}">
         <p th:text="${textError}"></p>
     </div>

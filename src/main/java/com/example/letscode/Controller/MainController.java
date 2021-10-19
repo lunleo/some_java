@@ -22,13 +22,17 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+
 @RequiredArgsConstructor
+
 public class MainController {
 
     @Value("${upload.path}")
     private String uploadPath;
 
+
     private final MainService mainService;
+
 
     @GetMapping("/")
     public String greeting(){
@@ -59,6 +63,7 @@ public class MainController {
     }
 
 
+
     @GetMapping("/add/new")
     public String addItem(ItemEntity itemEntity){
         return "add";
@@ -74,6 +79,7 @@ public class MainController {
             return "redirect:/main";
         }
     }
+
 
 
 }
