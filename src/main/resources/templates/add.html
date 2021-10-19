@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+    body {
+        background: linear-gradient(to bottom right, LemonChiffon, Khaki);
+    }
+    div {
+        float: left;
+        margin-top: 200px;
+        margin-bottom: 200px;  
+        font-style: italic
+        }
+
+</style>
+<body>
+<div>
+<form th:if = "!${itemEntity}" th:action="@{/add/new}" th:object="${itemEntity}" method="post" enctype="multipart/form-data">
+    <label style="font-size: 26px; margin-left: 200px;">Text:</label><br>
+    <input type="text" th:field="*{text}" id="text" style="margin-bottom: 20px; margin-left: 200px; border: none; background-color: DarkKhaki; margin-top: 15px;"><br>
+    <label style="font-size: 26px; margin-top: 15px; margin-left: 200px;">Tag:</label><br>
+    <input type="text" th:field="*{tag}" style="margin-bottom: 20px; margin-left: 200px; border: none; background-color: DarkKhaki; margin-top: 15px;"><br>
+    <label style="font-size: 26px; margin-left: 200px; margin-top: 15px;">StartPrice:</label><br>
+    <input type="text" th:field="*{startPrice}" style="margin-left: 200px; border: none; background-color: DarkKhaki; margin-top: 15px;"><br>
+    <input type="submit" value="Submit" class="submit" style="margin-left: 200px; font-size: 22px; background-color: Yellow; border-radius: 10px; border: none; margin-top: 30px; height: 50px;">
+</form>
+</div>
+
+<div>
+<form th:unless = "!${itemEntity}" th:action="@{/add/new}" th:object="${itemEntity}" method="post" enctype="multipart/form-data">
+    <div th:if="${textError}">
+        <p th:text="${textError}"></p>
+    </div>
+    <label style="font-size: 26px; margin-left: 600px;">Text:</label><br>
+    <input type="text" th:field="*{text}" th:value="${itemEntity.text}" style="margin-bottom: 20px; margin-left: 600px; border: none; background-color: DarkKhaki;  margin-top: 15px;" ><br>
+    <label style="font-size: 26px; margin-left: 600px;">Tag:</label><br>
+    <input type="text" th:field="*{tag}" th:value="${itemEntity.tag}" style="margin-bottom: 20px; margin-left: 600px; border: none; background-color: DarkKhaki;  margin-top: 15px;"><br>
+    <label style="font-size: 26px; margin-left: 600px;">StartPrice:</label><br>
+    <input type="text" th:field="*{startPrice}" th:value="${itemEntity.startPrice}" style="margin-left: 600px; border: none; background-color: DarkKhaki;  margin-top: 15px;"><br>
+    <input type="submit" value="Submit" style="margin-left: 600px; font-size: 22px; background-color: Yellow; border-radius: 10px; border: none; margin-top: 30px; height: 50px;">
+</form>
+</div>
+
+
+
+
+</body>
+</html>

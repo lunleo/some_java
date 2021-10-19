@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<style type="text/css">
+    TABLE {
+        border-collapse: collapse; /* Убираем двойные линии между ячейками */
+        width: 95%; /* Ширина таблицы */
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        margin-bottom: 25px;
+    }
+    TH, TD {
+        border: 1px solid black; /* Параметры рамки */
+        text-align: center; /* Выравнивание по центру */
+        padding: 4px; /* Поля вокруг текста */
+    }
+    TH {
+        background: #fc0; /* Цвет фона ячейки */
+        height: 40px; /* Высота ячеек */
+        vertical-align: bottom; /* Выравнивание по нижнему краю */
+        padding: 0; /* Убираем поля вокруг текста */
+    }
+    div {
+        padding: 10px;
+        margin-bottom: 25px;
+        width: 95%; /* Ширина таблицы */
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+</style>
+<body>
+
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+    <p th:inline="text">acc:[[${#httpServletRequest.remoteUser}]]</p>
+    <form th:action="@{/user/profile}">
+        <input type="submit" value="profile">
+    </form>
+    <form th:action="@{/user}" >
+        <input type="submit" value="get users"/>
+    </form>
+</div>
+<table>
+        <tr>
+            <td>My items</td>
+            <td>text</td>
+            <td>tag</td>
+            <td>startPrice</td>
+            <td>price</td>
+            <td>finishPrice</td>
+            <td>status</td>
+            <td>delete</td>
+        </tr>
+    <tr>
+        <td colspan="8" ><a th:href="@{/add/new}">add</a></td>
+    </tr>
+        <tr th:each="itemEntity : ${messages}" >
+            <td><p th:text = "${itemEntity.id}"></p></td>
+            <td><p th:text = "${itemEntity.text}"></p></td>
+            <td><p th:text = "${itemEntity.tag}"></p></td>
+            <td><p th:text = "${itemEntity.startPrice}"></p></td>
+            <td>
+                <p th:text = "${itemEntity.price}"></p>
+                <form th:action="@{/addPrice}" method="get">
+                    <input type="hidden" name="id" th:value="${itemEntity.id}">
+                    <input type="submit" value="add">
+                </form>
+
+            </td>
+            <td><p th:text = "${itemEntity.finishPrice}"></p></td>
+
+                <td th:if="${itemEntity.isBought == false}">
+                    <form th:action="@{/buy}" method="post">
+                        <input type="hidden" name="id" th:value="${itemEntity.id}">
+                        <input type="submit" value="sell">
+                    </form>
+                </td>
+            <td th:if="${itemEntity.isBought == true}">
+                <p>Sold Out</p>
+            </td>
+
+            <td>
+                <form th:action="@{/delete}" method="post">
+                <input type="hidden" name="id" th:value="${itemEntity.id}">
+                <input type="submit" value="delete">
+                </form>
+            </td>
+        </tr>
+    <tr>
+        <td colspan="8" ><a th:href="@{/add/new}">add</a></td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td>All items</td>
+        <td>text</td>
+        <td>tag</td>
+        <td>startPrice</td>
+        <td>price</td>
+        <td>finishPrice</td>
+        <td>owner</td>
+        <td>buy</td>
+    </tr>
+    <tr th:each="itemEntity : ${messagesAll}" >
+        <td><p th:text = "${itemEntity.id}"></p></td>
+        <td><p th:text = "${itemEntity.text}"></p></td>
+        <td><p th:text = "${itemEntity.tag}"></p></td>
+        <td><p th:text = "${itemEntity.startPrice}"></p></td>
+        <td>
+            <p th:text = "${itemEntity.price}"></p>
+
+        </td>
+        <td><p th:text = "${itemEntity.finishPrice}"></p></td>
+        <td><p th:text = "${itemEntity.authorName}"></p></td>
+        <td>
+            <form th:action="@{/addPrice}" method="get">
+            <input type="hidden" name="id" th:value="${itemEntity.id}">
+            <input type="submit" value="Add price.">
+            </form>
+        </td>
+    </tr>
+</table>
+
+</body>
+
+</html>
