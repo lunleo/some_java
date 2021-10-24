@@ -38,7 +38,7 @@ class MainServiceTest {
     User user;
     @BeforeEach
     void setAll() {
-    model = Mockito.mock(Model.class);
+        model = Mockito.mock(Model.class);
         user =  Mockito.mock(User.class);
     }
 
@@ -89,6 +89,25 @@ class MainServiceTest {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         assertFalse(mainService.postItem(itemEntity, bindingResult, user, model));
+    }
+
+    @Test
+    void whenPostAddPriceThenTrue() {
+        ItemEntity itemEntity = ItemEntity.builder().price(1).build();
+
+        when(itemEntityRepository.findById(Long.parseLong("1"))).thenReturn(Optional.of(itemEntity));
+        when(itemEntityRepository.save(itemEntity)).thenReturn(itemEntity);
+
+        assertTrue(mainService.postAddPrice("1", "1", model));
+    }
+    @Test
+    void whenPostAddPriceThenFalse() {
+        ItemEntity itemEntity = ItemEntity.builder().price(1).build();
+
+        when(itemEntityRepository.findById(Long.parseLong("1"))).thenReturn(Optional.of(itemEntity));
+        when(itemEntityRepository.save(itemEntity)).thenReturn(itemEntity);
+
+        assertFalse(mainService.postAddPrice("invalid_data", "1", model));
     }
 
 }

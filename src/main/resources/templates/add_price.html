@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+    .btn {
+        min-width: 150px;
+        padding: 0;
+        color: #cec9ce;
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        padding: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        font-weight: 900;
+        border-right: 1px solid #cec9ce;
+        transition: border .2s, background .2s, color .2s;
+        -webkit-transition: border .2s, background .2s, color .2s;
+        -moz-transition: border .2s, background .2s, color .2s;
+        -ms-transition: border .2s, background .2s, color .2s;
+        -o-transition: border .2s, background .2s, color .2s;
+    }
+
+    .btn:hover {
+        background-color: #ffa650;
+        color: #fff;
+        border-right-color: #ffa650;
+    }
+
+    .btn:active {
+        background-color: #1f1f1f;
+        color: #fff;
+        border-color: #1f1f1f;
+    }
+
+    body {
+        background-color: lightgreen;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    div {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px;
+        margin-bottom: 25px;
+        width: 95%; /* Ширина таблицы */
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+</style>
+<body>
+<div>
+<form th:if = "!${addPriceRequestDto}" th:action="@{/addPrice}" th:object="${addPriceRequestDto}" method="post">
+    <input type="hidden" name="id" th:value="${itemId}" ><br>
+    <label>addPriceValue:</label><br>
+    <input type="text" name="addValue"><br>
+
+   <button type="submit" class="btn"> submit </button>
+</form>
+</div>
+
+<div>
+<form th:unless = "!${addPriceRequestDto}" th:action="@{/addPrice}" th:object="${addPriceRequestDto}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" th:value="${addPriceRequestDto.item}" ><br>
+    <label>addPriceValue:</label><br>
+    <input type="text" name="addValue" th:value="${addPriceRequestDto.addPriceValue}"><br>
+    <button type="submit" class="btn"> submit </button>
+</form>
+</div>
+
+
+
+
+</body>
+</html>

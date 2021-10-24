@@ -69,4 +69,16 @@ class MainControllerTest {
         mockMvc.perform(post(POST_ITEM))
                 .andExpect(status().is3xxRedirection());
     }
+    @Test
+    void whenPostAddPriceThenSuccess() throws Exception {
+
+        mockMvc.perform(get(POST_ADD_PRICE))
+                .andExpect(status().isOk());
+
+        when(mainService.postAddPrice(any(),any(),any())).thenReturn(true);
+
+        mockMvc.perform(post(POST_ADD_PRICE))
+                .andExpect(status().is3xxRedirection());
+    }
+
 }

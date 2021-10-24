@@ -70,6 +70,22 @@ public class MainController {
         }
     }
 
+    @GetMapping("/addPrice")
+    public String addPrice( @RequestParam(name ="id")  String id,Model model){
+        model.addAttribute("itemId", id);
+        return "add_price";
+    }
+    @PostMapping("/addPrice")
+    public String postAddPrice(@RequestParam(name ="addValue")  String addValue, @RequestParam(name ="id")  String id, Model model) throws IOException {
 
+        Boolean isSuccess = mainService.postAddPrice(addValue, id, model);
+
+        if(!isSuccess){
+            return "add_price";
+        }else{
+            return "redirect:/main";
+        }
+
+    }
 
 }

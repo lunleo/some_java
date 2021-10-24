@@ -52,4 +52,19 @@ public class MainService {
         }
     }
 
+    public Boolean postAddPrice(String addValue, String id, Model model) {
+        try {
+            ItemEntity itemEntity = itemEntityRepository.findById(Long.parseLong(id)).get();
+            itemEntity.setPrice(itemEntity.getPrice() + Integer.parseInt(addValue));
+            itemEntityRepository.save(itemEntity);
+            model.addAttribute("message",null);
+            return true;
+        } catch (Exception e) {
+            AddPriceRequestDto addPriceRequestDto = new AddPriceRequestDto(id, addValue);
+            model.addAttribute("message", addPriceRequestDto);
+            return false;
+
+        }
+    }
+
 }
