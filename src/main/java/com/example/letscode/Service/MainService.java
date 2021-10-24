@@ -18,6 +18,23 @@ public class MainService {
 
     private final ItemEntityRepository itemEntityRepository;
 
+    public void getInfoForIndex(Model model, User user) {
+        Iterable<ItemEntity> messages = itemEntityRepository.findByOwner(user);
+        Iterable<ItemEntity> messagesAll = itemEntityRepository.findByIsBought(false);
+        model.addAttribute("messagesAll", messagesAll);
+        model.addAttribute("messages", messages);
+    }
+
+    public void deleteItem(String id) {
+        itemEntityRepository.deleteById(Long.parseLong(id));
+    }
+
+    public void buyItem(String id) {
+        ItemEntity itemEntity = itemEntityRepository.findById(Long.parseLong(id)).get();
+        itemEntity.setIsBought(true);
+        itemEntity.setFinishPrice(itemEntity.getPrice());
+        itemEntityRepository.save(itemEntity);
+    }
 
     public Boolean postItem(ItemEntity itemEntity, BindingResult bindingResult, User user, Model model) {
         itemEntity.setOwner(user);

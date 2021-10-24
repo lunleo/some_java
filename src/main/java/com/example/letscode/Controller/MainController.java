@@ -1,10 +1,9 @@
 package com.example.letscode.Controller;
 
-import com.example.letscode.Domain.Dto.AddPriceRequestDto;
 import com.example.letscode.Domain.ItemEntity;
 import com.example.letscode.Domain.User;
-import com.example.letscode.Repository.ItemEntityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.letscode.Service.MainService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,13 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
 
 @Controller
 
@@ -41,24 +36,19 @@ public class MainController {
 
     @GetMapping("/main")
     public String showIndex(Model model,@AuthenticationPrincipal User user){
-        Iterable<ItemEntity> messages = itemEntityRepository.findByOwner(user);
-        Iterable<ItemEntity> messagesAll = itemEntityRepository.findByIsBought(false);
-        model.addAttribute("messagesAll", messagesAll);
-        model.addAttribute("messages", messages);
+        mainService.getInfoForIndex(model, user);
         return "index";
     }
 
     @PostMapping("/delete")
     public String deleteItem(@RequestParam(name ="id")  String id){
-        itemEntityRepository.deleteById(Long.parseLong(id));
+        mainService.deleteItem(id);
         return "redirect:/main";
     }
 
     @PostMapping("/buy")
     public String buy( @RequestParam(name ="id")  String id){
-        ItemEntity itemEntity = itemEntityRepository.findById(Long.parseLong(id)).get();
-        itemEntity.setIsBought(true);
-        itemEntity.setFinishPrice(itemEntity.getPrice());
+        mainService.buyItem(id);
         return "redirect:/main";
     }
 

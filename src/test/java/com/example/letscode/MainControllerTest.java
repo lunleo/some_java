@@ -38,7 +38,28 @@ class MainControllerTest {
     void setAll() {
         mockMvc = MockMvcBuilders.standaloneSetup(mainController).build();
     }
-    
+
+    @Test
+    void whenGetInfoForIndexThenSuccess() throws Exception {
+        doNothing().when(mainService).getInfoForIndex(any(),any());
+        mockMvc.perform(get(GET_INFO_FOR_INDEX))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void whenDeleteItemThenSuccess() throws Exception {
+        doNothing().when(mainService).deleteItem(any());
+        mockMvc.perform(post(DELETE_ITEM))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void whenBuyItemThenSuccess() throws Exception {
+        doNothing().when(mainService).buyItem(any());
+        mockMvc.perform(post(BUY_ITEM))
+                .andExpect(status().is3xxRedirection());
+    }
+
     @Test
     void whenPostItemThenSuccess() throws Exception {
         when(mainService.postItem(any(),any(),any(),any())).thenReturn(true);
@@ -48,5 +69,4 @@ class MainControllerTest {
         mockMvc.perform(post(POST_ITEM))
                 .andExpect(status().is3xxRedirection());
     }
-
 }

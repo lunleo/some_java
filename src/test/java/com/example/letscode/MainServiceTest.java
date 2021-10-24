@@ -43,6 +43,35 @@ class MainServiceTest {
     }
 
     @Test
+    void whenGetInfoForIndexThenSuccess() throws Exception {
+        ItemEntity itemEntity = ItemEntity.builder().build();
+
+        ArrayList<ItemEntity> list = new ArrayList<>();
+        list.add(itemEntity);
+
+        when(itemEntityRepository.findByIsBought(false)).thenReturn(list);
+        when(itemEntityRepository.findByOwner(user)).thenReturn(list);
+
+        mainService.getInfoForIndex(model, user);
+    }
+    @Test
+    void whenDeleteItemThenSuccess() throws Exception {
+        doNothing().when(itemEntityRepository).deleteById(Long.parseLong("1")) ;
+
+        mainService.deleteItem("1");
+    }
+
+    @Test
+    void whenBuyItemThenSuccess() throws Exception {
+        ItemEntity itemEntity = ItemEntity.builder().build();
+
+        when(itemEntityRepository.findById(Long.parseLong("1"))).thenReturn(Optional.of(itemEntity));
+        when(itemEntityRepository.save(itemEntity)).thenReturn(itemEntity);
+
+        mainService.buyItem("1");
+    }
+
+    @Test
     void whenPostItemThenTrue() {
         BindingResult bindingResult = Mockito.mock(BindingResult.class);
         ItemEntity itemEntity = ItemEntity.builder().build();

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class ControllerUtils {
 
-    static Map<String, String> getErrorsMap(BindingResult bindingResult) {
+    public static Map<String, String> getErrorsMap(BindingResult bindingResult) {
         Map<String, String> errorsMap = bindingResult.getFieldErrors().stream().collect(Collectors.toMap(
                 fieldError -> fieldError.getField() + "Error",
                 FieldError::getDefaultMessage
