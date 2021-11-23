@@ -1,13 +1,11 @@
 FROM openjdk:16-alpine3.13
 
-RUN apk add -U subversion
-WORKDIR /some_java
+RUN apk update \
+    && apk add --no-cache gnupg
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+COPY target/*.jar app.jar
 
-COPY src ./src
-COPY src ./src
+EXPOSE 8080
 
-CMD ["./mvnw", "spring-boot:run"]
+CMD ["java","-jar","app.jar"]
+
